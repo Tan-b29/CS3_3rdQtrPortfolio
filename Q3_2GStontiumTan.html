@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Centralized Club Application</title>
+
+    <style>
+        body {
+            font-family: Courier;
+            background-color: rgb(209, 227, 255);
+        }
+
+        form {
+            width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 5px dotted #ffb2f5;
+            background-color: #f9f9f9;
+        }
+
+        fieldset {
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            width: 95%;
+            padding: 6px;
+            margin-top: 5px;
+        }
+
+        /* onblur invalid style */
+        .invalid {
+            border: 2px solid red;
+            background-color: #ffe6e6;
+        }
+
+        /* :focus pseudo-class */
+        input:focus, select:focus, textarea:focus {
+            background-color: #e6f2ff;
+            outline: none;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function Submit() {
+            if (confirm("Do you want to submit this application?")) {
+                var btn = document.getElementById("submitBtn");
+                btn.innerHTML = "Submitted";
+                btn.disabled = true;
+
+                document.getElementById("appForm").reset();
+                return false; // prevent actual submission
+            }
+            return false;
+        }
+
+        function Reset() {
+            return confirm("Do you want to reset all fields?");
+        }
+
+        function Empty(element) {
+            if (element.value.trim() === "") {
+                element.classList.add("invalid");
+            } else {
+                element.classList.remove("invalid");
+            }
+        }
+    </script>
+</head>
+
+<body onload="changeColor()">
+
+<h2 style="text-align:center;">Club Application Form !!!</h2>
+
+<form id="appForm"
+      method="post"
+      action="submit"
+      onsubmit="return Submit()"
+      onreset="return Reset()">
+
+    <!-- FIELDSET 1–4 -->
+    <fieldset>
+        <legend>Personal Information</legend>
+
+        <label>
+            Student ID:
+            <input type="number" name="studentID" required onblur="Empty(this)">
+        </label>
+
+        <label>
+            Full Name:
+            <input type="text" name="fullname" required onblur="Empty(this)">
+        </label>
+
+        <label>
+            Birthday:
+            <input type="date" name="birthday" required>
+        </label>
+
+        <label>
+            Email Address:
+            <input type="email" name="email" required onblur="Empty(this)">
+        </label>
+    </fieldset>
+
+    <!-- FIELDSET 5–8 -->
+    <fieldset>
+        <legend>Application Details</legend>
+
+        <label>
+            Mobile Phone:
+            <input type="text" name="mobile" required onblur="Empty(this)">
+        </label>
+
+        <label>
+            Grade Level:
+            <select name="grade" required>
+                <option value="">-- Select --</option>
+                <option value="g7">Grade Seven</option>
+                <option value="g8">Grade Eight</option>
+                <option value="g9">Grade Nine</option>
+                <option value="g10">Grade Ten</option>
+            </select>
+        </label>
+
+        <label>
+            Intern / Extern:
+            <br>
+            <input type="radio" name="status" value="I" required> Intern
+            <input type="radio" name="status" value="E"> Extern
+        </label>
+
+        <label>
+            Preferred Organization / Club:
+            <select name="club" required>
+                <option value="">-- Select --</option>
+                <option value="hm">Himig Agham</option>
+                <option value="tmr">Tomorrow</option>
+                <option value="mth">Math Club</option>
+                <option value="ali">Alianti</option>
+                <option value="vol">Volant</option>
+                <option value="bak">Bake Club</option>
+            </select>
+        </label>
+
+        <label>
+            Why do you want to join?
+            <textarea name="reason" rows="4" required onblur="Empty(this)"></textarea>
+        </label>
+    </fieldset>
+
+    <!-- onclick occurs naturally on button press -->
+    <button type="submit" id="submitBtn">Submit</button>
+    <button type="reset">Reset</button>
+
+</form>
+
+</body>
+</html>
