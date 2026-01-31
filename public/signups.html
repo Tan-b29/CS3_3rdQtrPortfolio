@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Signups</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+video {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+}
+
+.container {
+    width: 90%;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: center;
+}
+</style>
+
+<script>
+var allSignups = [];
+
+function loadSignups() {
+    var data = localStorage.getItem("clubSignups");
+
+    if (data == null) {
+        allSignups = [];
+    } else {
+        allSignups = JSON.parse(data);
+    }
+
+    var dropdown = document.getElementById("clubFilter");
+
+    for (var i = 0; i < allSignups.length; i++) {
+        var exists = false;
+
+        for (var j = 0; j < dropdown.options.length; j++) {
+            if (dropdown.options[j].value == allSignups[i].club) {
+                exists = true;
+            }
+        }
+
+        if (!exists) {
+            var option = document.createElement("option");
+            option.value = allSignups[i].club;
+            option.text = allSignups[i].club;
+            dropdown.add(option);
+        }
+    }
+
+    showTable(allSignups);
+}
+
+function filterClub() {
+    var club = document.getElementById("clubFilter").value;
+    var filtered = [];
+
+    if (club == "ALL") {
+        filtered = allSignups;
+    } else {
+        for (var i = 0; i < allSignups.length; i++) {
+            if (allSignups[i].club == club) {
+                filtered.push(allSignups[i]);
+            }
+        }
+    }
+
+    showTable(filtered);
+}
+
+function showTable(list) {
+    var tbody = document.getElementById("tableData");
+    tbody.innerHTML = "";
+
+    document.getElementById("total").innerHTML = list.length;
+
+    if (list.length == 0) {
+        tbody.innerHTML = "<tr><td colspan='7'>No Sign Ups</td></tr>";
+        return;
+    }
+
+    for (var i = 0; i < list.length; i++) {
+        var row = "<tr>";
+        row += "<td>" + list[i].club + "</td>";
+        row += "<td>" + list[i].id + "</td>";
+        row += "<td>" + list[i].fullname + "</td>";
+        row += "<td>" + list[i].grade + "</td>";
+        row += "<td>" + list[i].email + "</td>";
+        row += "<td>" + list[i].mobile + "</td>";
+        row += "<td>" + list[i].status + "</td>";
+        row += "</tr>";
+
+        tbody.innerHTML += row;
+    }
+}
+</script>
+</head>
+
+<body onload="loadSignups()">
+
+<video autoplay muted loop>
+    <source src="moonlit-meadow-moewalls-com.mp4">
+</video>
+
+<div class="container">
+
+<h2>Student Signups</h2>
+<a href="Q3_3GStontiumTan.html">Back to Signup</a>
+
+<p>
+Select Club:
+<select id="clubFilter" onchange="filterClub()">
+<option value="ALL">ALL</option>
+</select>
+</p>
+
+<p>Total Signup: <span id="total">0</span></p>
+
+<table>
+<tr>
+<th>Club</th>
+<th>ID</th>
+<th>Name</th>
+<th>Grade</th>
+<th>Email</th>
+<th>Mobile</th>
+<th>Status</th>
+</tr>
+<tbody id="tableData"></tbody>
+</table>
+
+</div>
+
+</body>
+</html>
+
+

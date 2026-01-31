@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Club Application Form</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Courier;
+}
+
+video {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+}
+
+form {
+    width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+}
+
+h2 {
+    text-align: center;
+    color: white;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, select, textarea {
+    width: 95%;
+    padding: 5px;
+}
+
+.radio-group label {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.invalid {
+    border: 2px solid red;
+}
+
+button {
+    margin-top: 15px;
+    padding: 8px 15px;
+}
+</style>
+
+<script>
+function Empty() {
+    if (this.value == "") {
+        this.className = "invalid";
+    } else {
+        this.className = "";
+    }
+}
+
+function Submit() {
+    if (!confirm("Do you want to submit this application?")) {
+        return false;
+    }
+
+    var data = localStorage.getItem("clubSignups");
+    var signups;
+
+    if (data == null) {
+        signups = [];
+    } else {
+        signups = JSON.parse(data);
+    }
+
+    var radios = document.getElementsByName("status");
+    var statusValue = "";
+
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            statusValue = radios[i].value;
+        }
+    }
+
+    var signup = {
+        id: document.getElementsByName("studentID")[0].value,
+        fullname: document.getElementsByName("fullname")[0].value,
+        bday: document.getElementsByName("bday")[0].value,
+        email: document.getElementsByName("email")[0].value,
+        mobile: document.getElementsByName("mobile")[0].value,
+        grade: document.getElementsByName("grade")[0].value,
+        status: statusValue,
+        club: document.getElementsByName("club")[0].value,
+        reason: document.getElementsByName("reason")[0].value
+    };
+
+    signups.push(signup);
+    localStorage.setItem("clubSignups", JSON.stringify(signups));
+
+    alert("Application saved!");
+    document.getElementById("appForm").reset();
+    return false;
+}
+
+function viewSignups() {
+    window.location.href = "signups.html";
+}
+</script>
+</head>
+
+<body>
+
+<video autoplay muted loop>
+    <source src="moonlit-meadow-moewalls-com.mp4">
+</video>
+
+<h2>Club Application Form</h2>
+
+<form id="appForm" onsubmit="return Submit()">
+
+<label>
+Student ID:
+<input type="number" name="studentID" onblur="Empty.call(this)" required>
+</label>
+
+<label>
+Full Name:
+<input type="text" name="fullname" onblur="Empty.call(this)" required>
+</label>
+
+<label>
+Birthday:
+<input type="date" name="bday" required>
+</label>
+
+<label>
+Email:
+<input type="email" name="email" onblur="Empty.call(this)" required>
+</label>
+
+<label>
+Mobile:
+<input type="text" name="mobile" onblur="Empty.call(this)" required>
+</label>
+
+<label>
+Grade:
+<select name="grade">
+<option>Grade 7</option>
+<option>Grade 8</option>
+<option>Grade 9</option>
+<option>Grade 10</option>
+</select>
+</label>
+
+<label>Status:</label>
+<div class="radio-group">
+<label><input type="radio" name="status" value="Intern"> Intern</label>
+<label><input type="radio" name="status" value="Extern"> Extern</label>
+</div>
+
+<label>
+Club:
+<select name="club">
+<option>Bake Club</option>
+<option>Math Club</option>
+<option>Computron</option>
+<option>Sagala</option>
+<option>Tomorrow</option>
+<option>Himig Agham</option>
+</select>
+</label>
+
+<label>
+Reason for Joining:
+<textarea name="reason" onblur="Empty.call(this)"></textarea>
+</label>
+
+<button type="submit">Submit</button>
+<button type="button" onclick="viewSignups()">View Signups</button>
+
+</form>
+
+</body>
+</html>
